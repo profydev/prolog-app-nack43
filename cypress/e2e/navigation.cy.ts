@@ -1,3 +1,5 @@
+const firstUlTagSelectorInNav = "nav > ul:nth-of-type(1)";
+
 describe("Sidebar Navigation", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/dashboard");
@@ -36,7 +38,11 @@ describe("Sidebar Navigation", () => {
       cy.get("nav").contains("Collapse").click();
 
       // check that links still exist and are functionable
-      cy.get("nav").find("a").should("have.length", 5).eq(1).click();
+      cy.get(firstUlTagSelectorInNav)
+        .find("a")
+        .should("have.length", 5)
+        .eq(1)
+        .click();
       cy.url().should("eq", "http://localhost:3000/dashboard/issues");
 
       // check that text is not rendered
@@ -90,7 +96,7 @@ describe("Sidebar Navigation", () => {
       isInViewport("nav");
 
       // check that all links are rendered
-      cy.get("nav").find("a").should("have.length", 5);
+      cy.get(firstUlTagSelectorInNav).find("a").should("have.length", 5);
 
       // Support button should be rendered but Collapse button not
       cy.get("nav").contains("Support").should("exist");
