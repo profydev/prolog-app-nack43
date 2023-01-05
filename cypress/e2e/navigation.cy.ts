@@ -42,6 +42,16 @@ describe("Sidebar Navigation", () => {
       // check that text is not rendered
       cy.get("nav").contains("Issues").should("not.exist");
     });
+
+    it("Support link has correct href value", () => {
+      cy.get("nav")
+        .contains("Support")
+        .should(
+          "have.attr",
+          "href",
+          "mailto:support@prolog-app.com?subject=Support Request: "
+        );
+    });
   });
 
   context("mobile resolution", () => {
