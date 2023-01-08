@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo } from "react";
 import styled, { css } from "styled-components";
 import { Routes } from "@config/routes";
 import { NavigationContext } from "./navigation-context";
@@ -7,6 +7,7 @@ import { MenuItemButton } from "./menu-item-button";
 import { MenuItemLink } from "./menu-item-link";
 import { Button } from "@features/ui";
 import { breakpoint, color, space, zIndex } from "@styles/theme";
+import { useWindowSize } from "@hooks/useWindowSize";
 
 const menuItems = [
   { text: "Projects", iconSrc: "/icons/projects.svg", href: Routes.projects },
@@ -165,18 +166,25 @@ export function SidebarNavigation() {
   const router = useRouter();
   const { isSidebarCollapsed, toggleSidebar } = useContext(NavigationContext);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const { width } = useWindowSize();
+
+  const logoSrc = useMemo(() => {
+    // The header on mobile always shows the large logo
+    if (width && width < 1024) {
+      return "/icons/logo-large.svg";
+    }
+
+    return isSidebarCollapsed
+      ? "/icons/logo-small.svg"
+      : "/icons/logo-large.svg";
+  }, [width, isSidebarCollapsed]);
+
   return (
     <Container isCollapsed={isSidebarCollapsed}>
       <FixedContainer>
         <Header>
-          <Logo
-            src={
-              isSidebarCollapsed
-                ? "/icons/logo-small.svg"
-                : "/icons/logo-large.svg"
-            }
-            alt="logo"
-          />
+          <Logo src={logoSrc} alt="logo" />
           <MenuButton onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}>
             <MenuIcon
               src={isMobileMenuOpen ? "/icons/close.svg" : "/icons/menu.svg"}
