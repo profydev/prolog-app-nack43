@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useState, useMemo } from "react";
 import styled, { css } from "styled-components";
@@ -206,11 +207,12 @@ export function SidebarNavigation() {
           </LinkList>
 
           <List>
-            <MenuItemButton
+            <MenuItemLink
               text="Support"
               iconSrc="/icons/support.svg"
               isCollapsed={isSidebarCollapsed}
-              onClick={() => alert("Support")}
+              href="mailto:support@prolog-app.com?subject=Support Request: "
+              isActive={false}
             />
             <CollapseMenuItem
               text="Collapse"
